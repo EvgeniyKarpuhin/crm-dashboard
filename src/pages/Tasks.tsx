@@ -3,7 +3,7 @@ import { useTaskStore } from "../store/useTaskStore";
 import { useClientStore } from "../store/useClientStore";
 
 const Tasks = () => {
-  const { tasks, addTask, updateStatus } = useTaskStore();
+  const { tasks, addTask, updateStatus, fetchTasks } = useTaskStore();
   const { clients } = useClientStore();
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -61,6 +61,8 @@ const Tasks = () => {
   );
 
   useEffect(() => {
+    fetchTasks();
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsOpen(false);
