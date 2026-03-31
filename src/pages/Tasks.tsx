@@ -8,10 +8,14 @@ const Tasks = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [clientId, setClientId] = useState("");
+  const [filterClientId, setFilterClientId] = useState("");
 
-  const newTasks = tasks.filter((t) => t.status === "new");
-  const inProgressTasks = tasks.filter((t) => t.status === "in-progress");
-  const doneTasks = tasks.filter((t) => t.status === "done");
+  const filteredTasks = filterClientId
+  ? tasks.filter((t) => t.clientId === filterClientId)
+  : tasks;
+  const newTasks = filteredTasks.filter((t) => t.status === "new");
+  const inProgressTasks = filteredTasks.filter((t) => t.status === "in-progress");
+  const doneTasks = filteredTasks.filter((t) => t.status === "done");
 
   const renderColumn = (title: string, items: typeof tasks) => (
     <div className="flex-1 bg-gray-100 p-4 rounded">
@@ -27,6 +31,18 @@ const Tasks = () => {
                 <p className="text-sm text-gray-500">
                   {client?.name || "No client"}
                 </p>
+                <select
+                  value={filterClientId}
+                  onChange={(e) => setFilterClientId(e.target.value)}
+                  className="border px-2 py-1"
+                >
+                  <option value="">All Clients</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.id}>
+                      {client.name}
+                    </option>
+                  ))}
+                </select>
                 <select
                   value={task.status}
                   onChange={(e) => updateStatus(task.id, e.target.value as any)}
