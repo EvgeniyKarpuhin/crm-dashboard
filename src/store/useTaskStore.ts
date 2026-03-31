@@ -6,26 +6,27 @@ export interface Task {
     id: string;
     title: string;
     status: TaskStatus;
+    clientId: string;
 }
 
 interface TaskStore {
     tasks: Task[];
-    addTask: (title: string) => void;
+    addTask: (title: string, clientId: string) => void;
     updateStatus: (id: string, status: TaskStatus) => void;
 }
 
 export const useTaskStore = create<TaskStore>((set) => ({
     tasks: [
-        {id:"1", title: "Create dashboard UI", status: "new"},
-        {id:"2", title: "Setup routing", status: "in-progress"},
-        {id:"3", title: "Connect API", status: "done"}
+        {id:"1", title: "Create dashboard UI", status: "new", clientId: "1"},
+        {id:"2", title: "Setup routing", status: "in-progress", clientId: "2"},
+        {id:"3", title: "Connect API", status: "done", clientId: "3"}
     ],
 
-    addTask: (title) =>
+    addTask: (title, clientId) =>
         set((state) => ({
             tasks: [
                 ...state.tasks,
-                { id: Date.now().toString(), title, status: "new"},
+                { id: Date.now().toString(), title, status: "new", clientId},
             ],
         })),
 
