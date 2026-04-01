@@ -12,9 +12,13 @@ Axios
 
 ✨ Features
 Dashboard with statistics
-Task management (create, update, filter)
-Client management
-Responsive UI
+Task management (kanban board: create, update, drag & drop)
+Client management (CRUD operations)
+Task filtering by client
+Global state management with Zustand
+API integration (REST, Axios)
+Responsive UI (Tailwind CSS)
+Modal windows and form handling
 
 📦 Installation
 npm install
