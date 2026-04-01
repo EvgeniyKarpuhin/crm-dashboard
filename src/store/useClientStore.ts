@@ -7,17 +7,17 @@ export interface Client {
     company: string;
 }
 
-interface ClintStore {
+interface ClientStore {
     clients: Client[];
     addClient: (client: Omit<Client, "id">) => void;
 }
 
-export const useClientStore = create<ClintStore>((set) => ({
+export const useClientStore = create<ClientStore>((set) => ({
     clients: [
         {
             id: "1",
             name: "John Doe",
-            email: "jonh@example.com",
+            email: "john@example.com",
             company: "Google",
         },
         {
