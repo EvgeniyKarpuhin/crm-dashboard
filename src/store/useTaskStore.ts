@@ -12,6 +12,10 @@ export interface Task {
 
 interface TaskStore {
     tasks: Task[];
+    loading: boolean;
+    error: string | null;
+
+    fetchTask: () => Promise<void>;
     addTask: (title: string, clientId: string) => void;
     updateStatus: (id: string, status: TaskStatus) => void;
     fetchTasks: () => Promise<void>;
@@ -23,6 +27,20 @@ export const useTaskStore = create<TaskStore>((set) => ({
         {id:"2", title: "Setup routing", status: "in-progress", clientId: "2"},
         {id:"3", title: "Connect API", status: "done", clientId: "3"}
     ],
+    loading: false,
+    error: null,
+
+    fetchTask: async () => {
+        try {
+            set({ loading: true, error: null });
+
+            const data = await fetchTask();
+
+            set({ tasks: data, loading: false });
+        } catch (e) {
+            set({error: "Filed to load tasks", loading: false});
+        }
+    },
 
     fetchTasks: async () => {
         const data = await fetchTask();

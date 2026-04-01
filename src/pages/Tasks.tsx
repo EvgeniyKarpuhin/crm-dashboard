@@ -3,7 +3,12 @@ import { useTaskStore } from "../store/useTaskStore";
 import { useClientStore } from "../store/useClientStore";
 
 const Tasks = () => {
+<<<<<<< Updated upstream
   const { tasks, addTask, updateStatus, fetchTasks } = useTaskStore();
+=======
+  const { tasks, loading, error, fetchTask, addTask, updateStatus } =
+    useTaskStore();
+>>>>>>> Stashed changes
   const { clients } = useClientStore();
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -11,10 +16,12 @@ const Tasks = () => {
   const [filterClientId, setFilterClientId] = useState("");
 
   const filteredTasks = filterClientId
-  ? tasks.filter((t) => t.clientId === filterClientId)
-  : tasks;
+    ? tasks.filter((t) => t.clientId === filterClientId)
+    : tasks;
   const newTasks = filteredTasks.filter((t) => t.status === "new");
-  const inProgressTasks = filteredTasks.filter((t) => t.status === "in-progress");
+  const inProgressTasks = filteredTasks.filter(
+    (t) => t.status === "in-progress",
+  );
   const doneTasks = filteredTasks.filter((t) => t.status === "done");
 
   const renderColumn = (title: string, items: typeof tasks) => (
@@ -72,6 +79,13 @@ const Tasks = () => {
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, []);
+
+  if (loading) {
+    return <p className="text-center mt-10">Loading tasks...</p>;
+  }
+  if (error) {
+    return <p className="text-center text-red-500 mt-10">{error}</p>;
+  }
 
   return (
     <div>
