@@ -151,9 +151,14 @@ const Tasks = () => {
     if (!over) return;
 
     const taskId = String(active.id);
-    const newStatus = String(over.id) as TaskStatus;
+    let newStatus = over.id;
+    const targetTask = tasks.find((t) => t.id === over.id);
 
-    updateStatus(taskId, newStatus);
+    if (targetTask) {
+      newStatus = targetTask.status;
+    }
+
+    updateStatus(taskId, newStatus as TaskStatus);
   };
 
   useEffect(() => {
