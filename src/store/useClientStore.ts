@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface Client {
     id: string;
@@ -12,21 +13,9 @@ interface ClientStore {
     addClient: (client: Omit<Client, "id">) => void;
 }
 
-export const useClientStore = create<ClientStore>((set) => ({
-    clients: [
-        {
-            id: "1",
-            name: "John Doe",
-            email: "john@example.com",
-            company: "Google",
-        },
-        {
-            id: "2",
-            name: "Jane Smith",
-            email: "jane@example.com",
-            company: "Amazon",
-        },
-    ],
+export const useClientStore = create<ClientStore>()(
+    persist ((set) => ({
+    clients: [],
 
     addClient: (client) =>
         set((state) => ({
@@ -35,4 +24,8 @@ export const useClientStore = create<ClientStore>((set) => ({
                 { id: Date.now().toString(), ...client },
             ],
         })),
-}));
+}),
+{
+    name: "client-storage",
+}
+));

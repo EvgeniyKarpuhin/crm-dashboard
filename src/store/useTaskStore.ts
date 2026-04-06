@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type TaskStatus = "new" | "in-progress" | "done";
 
@@ -15,14 +16,11 @@ interface TaskStore {
     updateStatus: (id: string, status: TaskStatus) => void;
 }
 
-export const useTaskStore = create<TaskStore>((set) => ({
-    tasks: [
-        {id:"1", title: "Create dashboard UI", status: "new", clientId: "1"},
-        {id:"2", title: "Setup routing", status: "in-progress", clientId: "2"},
-        {id:"3", title: "Connect API", status: "done", clientId: "3"}
-    ],
+export const useTaskStore = create<TaskStore>()(
+    persist((set) => ({
+    tasks: [],
 
-    addTask: (title, clientId) =>
+    addTask: (title: string, clientId: string) =>
         set((state) => ({
             tasks: [
                 ...state.tasks,
@@ -30,10 +28,14 @@ export const useTaskStore = create<TaskStore>((set) => ({
             ],
         })),
 
-        updateStatus: (id, status) =>
-            set((state) => ({
-                tasks: state.tasks.map((task) => 
+        updateStatus: (id: string, status: TaskStatus) =>
+            set((state: any) => ({
+                tasks: state.tasks.map((task: any) => 
                 task.id === id ? {...task, status} : task
             ),
             })),
-}));
+}),
+{
+    name: "task-storage",
+}
+));
