@@ -47,8 +47,6 @@ function TaskCard({ task, client, updateStatus, deleteTask }: TaskCardProps) {
   return (
     <div
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
       style={{
         transform: transform ? CSS.Translate.toString(transform) : undefined,
         transition: "none",
@@ -56,6 +54,13 @@ function TaskCard({ task, client, updateStatus, deleteTask }: TaskCardProps) {
       className="p-3 bg-white rounded shadow cursor-grab active:cursor-grabbing select-none"
     >
       <div className="flex justify-between items-center gap-3">
+        <span
+          {...listeners}
+          {...attributes}
+          className="cursor-grab"
+        >
+          ⠿
+        </span>
         <span>{task.title}</span>
 
         <p className="text-sm text-gray-500">
@@ -74,7 +79,10 @@ function TaskCard({ task, client, updateStatus, deleteTask }: TaskCardProps) {
           <option value="done">Done</option>
         </select>
         <button
-          onClick={() => deleteTask(task.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteTask(task.id);
+          }}
           className="text-red-500 text-sm hover:underline"
         >
           Delete

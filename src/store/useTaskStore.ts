@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-// import { fetchTask } from "../services/taskService";
 
 export type TaskStatus = "new" | "in-progress" | "done";
 
@@ -13,14 +12,10 @@ export interface Task {
 
 interface TaskStore {
     tasks: Task[];
-    // loading: boolean;
-    // error: string | null;
-
-    // fetchTask: () => Promise<void>;
+    
     addTask: (title: string, clientId: string) => void;
     updateStatus: (id: string, status: TaskStatus) => void;
     deleteTask: (id: string) => void;
-    // fetchTasks: () => Promise<void>;
 }
 
 export const useTaskStore = create<TaskStore>()(
