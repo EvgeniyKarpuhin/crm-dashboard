@@ -12,8 +12,10 @@ export interface Task {
 
 interface TaskStore {
     tasks: Task[];
+    
     addTask: (title: string, clientId: string) => void;
     updateStatus: (id: string, status: TaskStatus) => void;
+    deleteTask: (id: string) => void;
 }
 
 export const useTaskStore = create<TaskStore>()(

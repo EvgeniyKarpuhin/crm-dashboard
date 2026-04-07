@@ -31,9 +31,10 @@ type TaskCardProps = {
   task: Task;
   client?: Client;
   updateStatus: (taskId: string, status: TaskStatus) => void;
+  deleteTask: (taskId: string) => void;
 };
 
-function TaskCard({ task, client, updateStatus }: TaskCardProps) {
+function TaskCard({ task, client, updateStatus, deleteTask }: TaskCardProps) {
   const { 
     attributes, 
     listeners, 
@@ -46,8 +47,6 @@ function TaskCard({ task, client, updateStatus }: TaskCardProps) {
   return (
     <div
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
       style={{
         transform: transform ? CSS.Translate.toString(transform) : undefined,
         transition: "none",
@@ -55,6 +54,13 @@ function TaskCard({ task, client, updateStatus }: TaskCardProps) {
       className="p-3 bg-white rounded shadow cursor-grab active:cursor-grabbing select-none"
     >
       <div className="flex justify-between items-center gap-3">
+        <span
+          {...listeners}
+          {...attributes}
+          className="cursor-grab"
+        >
+          ⠿
+        </span>
         <span>{task.title}</span>
 
         <p className="text-sm text-gray-500">
@@ -72,6 +78,15 @@ function TaskCard({ task, client, updateStatus }: TaskCardProps) {
           <option value="in-progress">In Progress</option>
           <option value="done">Done</option>
         </select>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteTask(task.id);
+          }}
+          className="text-red-500 text-sm hover:underline"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
@@ -83,6 +98,7 @@ type TaskColumnProps = {
   items: Task[];
   clientsMap: ClientsMap;
   updateStatus: (taskId: string, status: TaskStatus) => void;
+  deleteTask: (id: string) => void;
 };
 
 function TaskColumn({
@@ -91,6 +107,7 @@ function TaskColumn({
   items,
   clientsMap,
   updateStatus,
+  deleteTask,
 }: TaskColumnProps) {
   const { setNodeRef } = useDroppable({
     id: droppableId,
@@ -110,6 +127,7 @@ function TaskColumn({
               task={task}
               client={client}
               updateStatus={updateStatus}
+              deleteTask={deleteTask}
             />
           );
         })}
@@ -119,7 +137,7 @@ function TaskColumn({
 }
 
 const Tasks = () => {
-  const { tasks, addTask, updateStatus } = useTaskStore();
+  const { tasks, addTask, updateStatus, deleteTask } = useTaskStore();
   const { clients } = useClientStore();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -191,6 +209,7 @@ const Tasks = () => {
             items={newTasks}
             clientsMap={clientsMap}
             updateStatus={updateStatus}
+            deleteTask={deleteTask}
           />
 
           <TaskColumn
@@ -199,6 +218,7 @@ const Tasks = () => {
             items={inProgressTasks}
             clientsMap={clientsMap}
             updateStatus={updateStatus}
+            deleteTask={deleteTask}
           />
 
           <TaskColumn
@@ -207,6 +227,7 @@ const Tasks = () => {
             items={doneTasks}
             clientsMap={clientsMap}
             updateStatus={updateStatus}
+            deleteTask={deleteTask}
           />
         </div>
       </DndContext>
