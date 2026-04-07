@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useClientStore } from "../store/useClientStore";
 
 const Clients = () => {
-    const { clients, addClient } = useClientStore();
+    const { clients, addClient, deleteClient } = useClientStore();
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const[company, setCompany] = useState("");
+    const [company, setCompany] = useState("");
 
     return (
         <div>
@@ -23,11 +23,19 @@ const Clients = () => {
                 { clients.map((client) => (
                     <div
                         key={client.id}
-                        className="p-4 bg-white rounded shadow"
+                        className="flex justify-between p-4 bg-white rounded shadow"
                     >
-                        <h3 className="font-bold">{client.name}</h3>
-                        <p className="text-sm text-gray-500">{client.email}</p>
-                        <p className="text-sm">{client.company}</p>
+                        <div>
+                            <h3 className="font-bold">{client.name}</h3>
+                            <p className="text-sm text-gray-500">{client.email}</p>
+                            <p className="text-sm">{client.company}</p>
+                        </div>
+                        <button
+                            onClick={() => deleteClient(client.id)}
+                            className="text-red-500 text-sm hover:underline"
+                        >
+                            Delete
+                        </button>
                     </div>
                 ))}
             </div>

@@ -11,6 +11,7 @@ export interface Client {
 interface ClientStore {
     clients: Client[];
     addClient: (client: Omit<Client, "id">) => void;
+    deleteClient: (id: string) => void;
 }
 
 export const useClientStore = create<ClientStore>()(
@@ -24,7 +25,11 @@ export const useClientStore = create<ClientStore>()(
                 { id: Date.now().toString(), ...client },
             ],
         })),
-}),
+    deleteClient: (id) =>
+        set((state) => ({
+            clients: state.clients.filter((client) => client.id !== id),
+        })),
+    }),
 {
     name: "client-storage",
 }
