@@ -36,11 +36,6 @@ export const useTaskStore = create<TaskStore>()(
                 task.id === id ? {...task, status} : task
             ),
             })),
-
-        deleteTask: (id: string) =>
-            set((state: any) => ({
-                tasks: state.tasks.filter((task: any) => task.id !== id),
-            })),
 }),
 {
     name: "task-storage",
